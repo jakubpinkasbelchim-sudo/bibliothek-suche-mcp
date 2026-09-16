@@ -1,6 +1,6 @@
 {
   "name": "bibliothek-suche-mcp",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat"],
 
@@ -20,7 +20,19 @@
     { "tag": "v1", "new_sqlite_classes": ["BibliothekMCP"] }
   ],
 
-  // Secrets NICHT hier eintragen, sondern per `wrangler secret put <NAME>`:
+  // @cloudflare/workers-oauth-provider speichert Clients/Tokens/Grants hier.
+  // WICHTIG: "id" muss durch die echte KV-Namespace-ID ersetzt werden
+  // (Cloudflare-Dashboard -> Workers & Pages -> KV -> Create namespace,
+  // z. B. Name "bibliothek-suche-oauth" -> ID kopieren -> hier einsetzen).
+  "kv_namespaces": [
+    {
+      "binding": "OAUTH_KV",
+      "id": "HIER_KV_NAMESPACE_ID_EINTRAGEN"
+    }
+  ],
+
+  // Secrets NICHT hier eintragen, sondern im Cloudflare-Dashboard unter
+  // Settings -> Variables and Secrets:
   //   CHROMA_API_KEY
   //   CHROMA_TENANT
   //   CHROMA_DATABASE
