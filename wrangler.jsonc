@@ -30,7 +30,21 @@
       "id": "7fa381a9b25341888a64be67b04012e2"
     }
   ],
-
+// ↓↓↓ NEU: hier einfügen ↓↓↓
+  "observability": {
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "invocation_logs": true,
+      "persist": true
+    },
+    "traces": {
+      "enabled": false,
+      "head_sampling_rate": 1,
+      "persist": true
+    }
+  },
+  // ↑↑↑ NEU ↑↑↑
   // Secrets NICHT hier eintragen, sondern im Cloudflare-Dashboard unter
   // Settings -> Variables and Secrets:
   //   CHROMA_API_KEY
