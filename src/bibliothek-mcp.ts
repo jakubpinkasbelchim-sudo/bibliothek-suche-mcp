@@ -75,16 +75,40 @@ export class BibliothekMCP extends McpAgent<Env> {
   }
 
   private async frageChroma(vektor: number[], anzahl: number): Promise<ChromaQueryResponse> {
+    // Werte trimmen und prüfen, damit Konfigurationsfehler eine klare Meldung
+    // liefern statt eines kryptischen Chroma-Fehlers.
+    const tenant = (this.env.CHROMA_TENANT ?? "").trim();
+    const datenbank = (this.env.CHROMA_DATABASE ?? "").trim();
+    const collectionId = (this.env.CHROMA_COLLECTION_ID ?? "").trim();
+    const apiKey = (this.env.CHROMA_API_KEY ?? "").trim();
+
+    const fehlend = [
+      !tenant && "CHROMA_TENANT",
+      !datenbank && "CHROMA_DATABASE",
+      !collectionId && "CHROMA_COLLECTION_ID",
+      !apiKey && "CHROMA_API_KEY",
+    ].filter(Boolean);
+    if (fehlend.length > 0) {
+      throw new Error(`Secret(s) nicht gesetzt im Worker: ${fehlend.join(", ")}`);
+    }
+
+    const uuidV4 = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    if (!uuidV4.test(collectionId)) {
+      throw new Error(
+        `CHROMA_COLLECTION_ID ist kein gültiges UUIDv4 (Wert kommt an als: "${collectionId}")`
+      );
+    }
+
     const url =
-      `https://api.trychroma.com/api/v2/tenants/${this.env.CHROMA_TENANT}` +
-      `/databases/${this.env.CHROMA_DATABASE}` +
-      `/collections/${this.env.CHROMA_COLLECTION_ID}/query`;
+      `https://api.trychroma.com/api/v2/tenants/${tenant}` +
+      `/databases/${datenbank}` +
+      `/collections/${collectionId}/query`;
 
     const antwort = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-chroma-token": this.env.CHROMA_API_KEY,
+        "x-chroma-token": apiKey,
       },
       body: JSON.stringify({
         query_embeddings: [vektor],
