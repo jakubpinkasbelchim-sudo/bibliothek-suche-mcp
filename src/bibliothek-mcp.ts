@@ -61,6 +61,39 @@ export class BibliothekMCP extends McpAgent<Env> {
         }
       }
     );
+
+    // Diagnose-Tool: zeigt, welche Umgebungsvariablen der Worker tatsächlich
+    // sieht – nur Namen und Längen, niemals die Werte selbst.
+    this.server.tool(
+      "pruefe_konfiguration",
+      "Prüft, ob die Chroma-Zugangsdaten im Worker ankommen. Gibt nur Variablennamen und " +
+        "Längen zurück, keine Werte.",
+      {},
+      async () => {
+        const erwartet = ["CHROMA_API_KEY", "CHROMA_TENANT", "CHROMA_DATABASE", "CHROMA_COLLECTION_ID"];
+        const env = this.env as unknown as Record<string, unknown>;
+        const alleNamen = Object.keys(env).sort();
+
+        const status = erwartet.map((name) => {
+          const wert = env[name];
+          if (typeof wert !== "string") return `${name}: FEHLT (Typ: ${typeof wert})`;
+          const getrimmt = wert.trim();
+          const hinweis = getrimmt.length !== wert.length ? " – enthält Leerzeichen/Zeilenumbruch am Rand!" : "";
+          return `${name}: vorhanden, Länge ${wert.length}${hinweis}`;
+        });
+
+        return {
+          content: [
+            {
+              type: "text",
+              text:
+                `Erwartete Variablen:\n${status.join("\n")}\n\n` +
+                `Alle im Worker sichtbaren env-Schlüssel:\n${alleNamen.join(", ")}`,
+            },
+          ],
+        };
+      }
+    );
   }
 
   private async embedde(text: string): Promise<number[]> {
