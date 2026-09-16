@@ -34,7 +34,7 @@
   // Nicht-geheime Konfiguration direkt hier – geht bei Deploys nicht verloren.
   // CHROMA_TENANT bitte mit deiner echten Tenant-ID befüllen.
   "vars": {
-    "CHROMA_TENANT": "HIER_TENANT_ID_EINTRAGEN",
+    "CHROMA_TENANT": "6426f0fc-d0bb-4edf-9b07-dcc1094a570c",
     "CHROMA_DATABASE": "BooksearchJP",
     "CHROMA_COLLECTION_ID": "eccdcae2-2d1c-4991-ae66-87f204e51b83"
   }
