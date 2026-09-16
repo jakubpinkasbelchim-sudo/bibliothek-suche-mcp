@@ -4,6 +4,9 @@
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat"],
 
+  // Verhindert, dass wrangler deploy im Dashboard gesetzte Variablen löscht.
+  "keep_vars": true,
+
   // Ermöglicht env.AI.run(...) im Worker
   "ai": {
     "binding": "AI"
@@ -21,35 +24,22 @@
   ],
 
   // @cloudflare/workers-oauth-provider speichert Clients/Tokens/Grants hier.
-  // WICHTIG: "id" muss durch die echte KV-Namespace-ID ersetzt werden
-  // (Cloudflare-Dashboard -> Workers & Pages -> KV -> Create namespace,
-  // z. B. Name "bibliothek-suche-oauth" -> ID kopieren -> hier einsetzen).
   "kv_namespaces": [
     {
       "binding": "OAUTH_KV",
       "id": "7fa381a9b25341888a64be67b04012e2"
     }
   ],
-// ↓↓↓ NEU: hier einfügen ↓↓↓
-  "observability": {
-    "logs": {
-      "enabled": true,
-      "head_sampling_rate": 1,
-      "invocation_logs": true,
-      "persist": true
-    },
-    "traces": {
-      "enabled": false,
-      "head_sampling_rate": 1,
-      "persist": true
-    }
-  },
-  // ↑↑↑ NEU ↑↑↑
-  // Secrets NICHT hier eintragen, sondern im Cloudflare-Dashboard unter
-  // Settings -> Variables and Secrets:
+
+  // Nicht-geheime Konfiguration direkt hier – geht bei Deploys nicht verloren.
+  // CHROMA_TENANT bitte mit deiner echten Tenant-ID befüllen.
+  "vars": {
+    "CHROMA_TENANT": "HIER_TENANT_ID_EINTRAGEN",
+    "CHROMA_DATABASE": "BooksearchJP",
+    "CHROMA_COLLECTION_ID": "eccdcae2-2d1c-4991-ae66-87f204e51b83"
+  }
+
+  // Einziges echtes Secret, NICHT hier eintragen, sondern im Dashboard
+  // unter Settings -> Variables and Secrets mit Typ "Secret":
   //   CHROMA_API_KEY
-  //   CHROMA_TENANT
-  //   CHROMA_DATABASE
-  //   CHROMA_COLLECTION_ID
-  "vars": {}
 }
