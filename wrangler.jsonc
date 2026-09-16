@@ -1,0 +1,29 @@
+{
+  "name": "bibliothek-suche-mcp",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // Ermöglicht env.AI.run(...) im Worker
+  "ai": {
+    "binding": "AI"
+  },
+
+  // McpAgent basiert auf der Cloudflare-Agents-SDK, die den Zustand
+  // (Sessions/SSE) in einem Durable Object hält.
+  "durable_objects": {
+    "bindings": [
+      { "name": "MCP_OBJECT", "class_name": "BibliothekMCP" }
+    ]
+  },
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["BibliothekMCP"] }
+  ],
+
+  // Secrets NICHT hier eintragen, sondern per `wrangler secret put <NAME>`:
+  //   CHROMA_API_KEY
+  //   CHROMA_TENANT
+  //   CHROMA_DATABASE
+  //   CHROMA_COLLECTION_ID
+  "vars": {}
+}
