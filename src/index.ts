@@ -24,7 +24,7 @@ export default new OAuthProvider<Env>({
   // Der eigentliche MCP-Endpunkt: nur mit gültigem (automatisch erteiltem)
   // Token erreichbar.
   apiRoute: "/mcp",
-  apiHandler: BibliothekMCP.serveSSE("/mcp"),
+  apiHandler: BibliothekMCP.serve("/mcp"),
 
   // Alles andere (Autorisierung, Token, Registrierung) läuft über unseren
   // eigenen, sehr einfachen Auto-Approve-Handler.
