@@ -1,0 +1,20 @@
+{
+  "name": "bibliothek-suche-mcp",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "agents": "latest",
+    "@modelcontextprotocol/sdk": "latest",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "wrangler": "latest",
+    "typescript": "^5.5.0",
+    "@cloudflare/workers-types": "latest"
+  }
+}
