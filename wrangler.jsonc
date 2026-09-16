@@ -1,6 +1,6 @@
 {
   "name": "bibliothek-suche-mcp",
-  "main": "src/index.ts",
+  "main": "index.ts",
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat"],
 
