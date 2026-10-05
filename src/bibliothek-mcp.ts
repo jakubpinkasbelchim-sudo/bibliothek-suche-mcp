@@ -387,7 +387,7 @@ export class BibliothekMCP extends McpAgent<Env> {
    * über /get. Texte werden nur geladen, wenn "documents" in include steht.
    */
   private async holeAlleChunks(where: Record<string, unknown>, include: string[]): Promise<ChunkRef[]> {
-    const seitenGroesse = 500;
+    const seitenGroesse = 250;
     const maxChunks = 20000; // Sicherheitsgrenze gegen Endlosschleifen / zu breite Filter
     const ergebnis: ChunkRef[] = [];
     let offset = 0;
